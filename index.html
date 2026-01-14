@@ -337,6 +337,46 @@
             color: var(--text-secondary);
         }
 
+        /* Half Portion Toggle */
+        .half-btn {
+            display: none;
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+
+        .ingredient.selected .half-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .half-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .half-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .ingredient.half-portion .ingredient-name::after {
+            content: ' (½)';
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
         /* Clear Selection Button */
         .clear-btn {
             background: transparent;
@@ -437,47 +477,57 @@
     <script>
         // Nutrition data from CSV
         const ingredients = [
+            // Bases
             { name: "Brown Rice", category: "Bases", calories: 177, carbs: 37, protein: 4, fat: 2 },
             { name: "Roots Rice", category: "Bases", calories: 173, carbs: 36, protein: 4, fat: 2 },
             { name: "Bulgur", category: "Bases", calories: 58, carbs: 13, protein: 2, fat: 0 },
             { name: "Kale", category: "Bases", calories: 49, carbs: 10, protein: 3, fat: 0 },
             { name: "Spinach", category: "Bases", calories: 20, carbs: 3, protein: 3, fat: 0 },
             { name: "Arcadian Mix", category: "Bases", calories: 22, carbs: 5, protein: 1, fat: 0 },
+            // Ingredients
+            { name: "Kimchi", category: "Ingredients", calories: 26, carbs: 8, protein: 6, fat: 0 },
+            { name: "Sweet Potatoes", category: "Ingredients", calories: 92, carbs: 14, protein: 1, fat: 3 },
+            { name: "Broccoli", category: "Ingredients", calories: 27, carbs: 3, protein: 1, fat: 4 },
+            { name: "Beets", category: "Ingredients", calories: 35, carbs: 5, protein: 1, fat: 1 },
             { name: "Black Beans", category: "Ingredients", calories: 47, carbs: 9, protein: 3, fat: 0 },
-            { name: "White Beans", category: "Ingredients", calories: 56, carbs: 10, protein: 4, fat: 0 },
             { name: "Chickpeas", category: "Ingredients", calories: 55, carbs: 10, protein: 3, fat: 1 },
-            { name: "Cucumbers", category: "Ingredients", calories: 8, carbs: 2, protein: 0, fat: 0 },
-            { name: "Tomatoes", category: "Ingredients", calories: 7, carbs: 2, protein: 0, fat: 0 },
-            { name: "Onions", category: "Ingredients", calories: 10, carbs: 2, protein: 0, fat: 0 },
+            { name: "White Beans", category: "Ingredients", calories: 56, carbs: 10, protein: 4, fat: 0 },
+            { name: "Cucumbers", category: "Ingredients", calories: 7, carbs: 2, protein: 0, fat: 0 },
+            { name: "Tomatoes", category: "Ingredients", calories: 8, carbs: 2, protein: 0, fat: 0 },
+            { name: "Red Onions", category: "Ingredients", calories: 10, carbs: 2, protein: 0, fat: 0 },
             { name: "Avocado", category: "Ingredients", calories: 81, carbs: 4, protein: 2, fat: 7 },
+            { name: "Goat Cheese", category: "Ingredients", calories: 86, carbs: 3, protein: 5, fat: 6 },
+            { name: "Parmesan", category: "Ingredients", calories: 104, carbs: 0, protein: 8, fat: 6 },
+            { name: "Feta", category: "Ingredients", calories: 75, carbs: 2, protein: 5, fat: 6 },
+            { name: "White Cheddar", category: "Ingredients", calories: 84, carbs: 2, protein: 6, fat: 5 },
+            { name: "Hard-Boiled Egg", category: "Ingredients", calories: 77, carbs: 1, protein: 6, fat: 5 },
+            { name: "Charred Corn", category: "Ingredients", calories: 56, carbs: 7, protein: 1, fat: 3 },
+            { name: "Craisins", category: "Ingredients", calories: 77, carbs: 21, protein: 0, fat: 1 },
+            { name: "Almonds", category: "Ingredients", calories: 75, carbs: 3, protein: 3, fat: 7 },
+            { name: "Pickled Onions", category: "Ingredients", calories: 12, carbs: 2, protein: 0, fat: 0 },
             { name: "Red Cabbage", category: "Ingredients", calories: 9, carbs: 2, protein: 0, fat: 0 },
             { name: "Carrots", category: "Ingredients", calories: 10, carbs: 2, protein: 0, fat: 0 },
-            { name: "Pita Chips", category: "Toppings", calories: 93, carbs: 14, protein: 2, fat: 4 },
-            { name: "Goat Cheese", category: "Toppings", calories: 86, carbs: 3, protein: 5, fat: 6 },
-            { name: "Parmesan", category: "Toppings", calories: 104, carbs: 0, protein: 8, fat: 6 },
-            { name: "Feta", category: "Toppings", calories: 75, carbs: 2, protein: 5, fat: 6 },
-            { name: "Cheddar", category: "Toppings", calories: 84, carbs: 2, protein: 6, fat: 5 },
-            { name: "Craisins", category: "Toppings", calories: 77, carbs: 21, protein: 0, fat: 1 },
-            { name: "Egg", category: "Toppings", calories: 77, carbs: 1, protein: 6, fat: 5 },
-            { name: "Corn", category: "Toppings", calories: 56, carbs: 7, protein: 1, fat: 3 },
-            { name: "Almonds", category: "Toppings", calories: 75, carbs: 3, protein: 3, fat: 7 },
-            { name: "Pickled Onions", category: "Toppings", calories: 12, carbs: 2, protein: 0, fat: 0 },
-            { name: "Jalapeños", category: "Toppings", calories: 5, carbs: 3, protein: 0, fat: 0 },
-            { name: "Sweet Potatoes", category: "Roasted", calories: 92, carbs: 14, protein: 1, fat: 3 },
-            { name: "Beets", category: "Roasted", calories: 35, carbs: 5, protein: 1, fat: 1 },
-            { name: "Broccoli", category: "Roasted", calories: 27, carbs: 3, protein: 1, fat: 4 },
-            { name: "Chicken", category: "Proteins", calories: 140, carbs: 1, protein: 26, fat: 5 },
-            { name: "Red Chili Miso Tofu", category: "Proteins", calories: 238, carbs: 14, protein: 16, fat: 15 },
+            { name: "Jalapeños", category: "Ingredients", calories: 5, carbs: 3, protein: 0, fat: 0 },
+            { name: "Pita Chips", category: "Ingredients", calories: 93, carbs: 14, protein: 2, fat: 4 },
+            { name: "Honey Sesame Sticks", category: "Ingredients", calories: 106, carbs: 11, protein: 1, fat: 6 },
+            // Proteins
+            { name: "Adobo Chicken", category: "Proteins", calories: 140, carbs: 1, protein: 26, fat: 5 },
+            { name: "Beef Barbacoa", category: "Proteins", calories: 211, carbs: 3, protein: 22, fat: 12 },
+            { name: "Korean BBQ Chicken", category: "Proteins", calories: 160, carbs: 6, protein: 26, fat: 6 },
             { name: "BBQ Tofu", category: "Proteins", calories: 250, carbs: 25, protein: 14, fat: 12 },
             { name: "Mushrooms", category: "Proteins", calories: 123, carbs: 5, protein: 2, fat: 8 },
+            // Dressings
             { name: "Cilantro Lime", category: "Dressings", calories: 127, carbs: 1, protein: 0, fat: 14 },
-            { name: "Tahini", category: "Dressings", calories: 102, carbs: 3, protein: 1, fat: 10 },
+            { name: "Lemon Tahini", category: "Dressings", calories: 102, carbs: 3, protein: 1, fat: 10 },
             { name: "Pesto", category: "Dressings", calories: 149, carbs: 1, protein: 1, fat: 16 },
             { name: "Greek Feta", category: "Dressings", calories: 90, carbs: 1, protein: 1, fat: 9 },
             { name: "Caesar", category: "Dressings", calories: 143, carbs: 1, protein: 1, fat: 15 },
             { name: "Lemon Za'atar", category: "Dressings", calories: 124, carbs: 1, protein: 0, fat: 14 },
-            { name: "Balsamic", category: "Dressings", calories: 189, carbs: 3, protein: 0, fat: 20 },
-            { name: "Miso Ginger", category: "Dressings", calories: 97, carbs: 2, protein: 0, fat: 10 }
+            { name: "Basil Balsamic", category: "Dressings", calories: 189, carbs: 3, protein: 0, fat: 20 },
+            { name: "Miso Ginger", category: "Dressings", calories: 97, carbs: 2, protein: 0, fat: 10 },
+            { name: "Sesame Caesar", category: "Dressings", calories: 93, carbs: 1, protein: 1, fat: 9 },
+            { name: "EV Olive Oil", category: "Dressings", calories: 248, carbs: 0, protein: 0, fat: 28 },
+            { name: "Red Wine Vinegar", category: "Dressings", calories: 6, carbs: 0, protein: 0, fat: 0 }
         ];
 
         // Group ingredients by category
@@ -491,10 +541,12 @@
         });
 
         // Category order
-        const categoryOrder = ["Bases", "Proteins", "Ingredients", "Toppings", "Roasted", "Dressings"];
+        const categoryOrder = ["Bases", "Proteins", "Ingredients", "Dressings"];
 
         // Selected ingredients
         const selected = new Set();
+        // Half portion ingredients
+        const halfPortions = new Set();
 
         // Render categories
         function renderCategories() {
@@ -515,8 +567,7 @@
                     </div>
                     <div class="ingredients">
                         ${items.map(ing => `
-                            <label class="ingredient" data-index="${ing.index}">
-                                <input type="checkbox" id="ing-${ing.index}">
+                            <div class="ingredient" data-index="${ing.index}">
                                 <div class="checkbox-custom">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                         <polyline points="20 6 9 17 4 12"></polyline>
@@ -526,7 +577,8 @@
                                     <div class="ingredient-name">${ing.name}</div>
                                     <div class="ingredient-calories">${ing.calories} cal</div>
                                 </div>
-                            </label>
+                                <button class="half-btn" title="Half portion">½</button>
+                            </div>
                         `).join('')}
                     </div>
                 `;
@@ -534,12 +586,25 @@
                 container.appendChild(categoryDiv);
             });
 
-            // Add event listeners
+            // Add event listeners for ingredient selection
             document.querySelectorAll('.ingredient').forEach(el => {
                 el.addEventListener('click', (e) => {
+                    // Don't toggle if clicking half button
+                    if (e.target.closest('.half-btn')) return;
                     e.preventDefault();
                     const index = parseInt(el.dataset.index);
                     toggleIngredient(index, el);
+                });
+            });
+
+            // Add event listeners for half portion buttons
+            document.querySelectorAll('.half-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const el = btn.closest('.ingredient');
+                    const index = parseInt(el.dataset.index);
+                    toggleHalfPortion(index, el, btn);
                 });
             });
         }
@@ -559,10 +624,27 @@
         function toggleIngredient(index, element) {
             if (selected.has(index)) {
                 selected.delete(index);
-                element.classList.remove('selected');
+                halfPortions.delete(index);
+                element.classList.remove('selected', 'half-portion');
+                element.querySelector('.half-btn').classList.remove('active');
             } else {
                 selected.add(index);
                 element.classList.add('selected');
+            }
+            updateNutrition();
+        }
+
+        function toggleHalfPortion(index, element, btn) {
+            if (!selected.has(index)) return;
+
+            if (halfPortions.has(index)) {
+                halfPortions.delete(index);
+                element.classList.remove('half-portion');
+                btn.classList.remove('active');
+            } else {
+                halfPortions.add(index);
+                element.classList.add('half-portion');
+                btn.classList.add('active');
             }
             updateNutrition();
         }
@@ -575,10 +657,11 @@
 
             selected.forEach(index => {
                 const ing = ingredients[index];
-                totalCalories += ing.calories;
-                totalProtein += ing.protein;
-                totalFat += ing.fat;
-                totalCarbs += ing.carbs;
+                const multiplier = halfPortions.has(index) ? 0.5 : 1;
+                totalCalories += ing.calories * multiplier;
+                totalProtein += ing.protein * multiplier;
+                totalFat += ing.fat * multiplier;
+                totalCarbs += ing.carbs * multiplier;
             });
 
             const isKids = document.getElementById('kidsBowl').checked;
@@ -613,8 +696,10 @@
 
         document.getElementById('clearBtn').addEventListener('click', () => {
             selected.clear();
+            halfPortions.clear();
             document.querySelectorAll('.ingredient.selected').forEach(el => {
-                el.classList.remove('selected');
+                el.classList.remove('selected', 'half-portion');
+                el.querySelector('.half-btn').classList.remove('active');
             });
             updateNutrition();
         });
