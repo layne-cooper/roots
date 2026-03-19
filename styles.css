@@ -1,0 +1,414 @@
+:root {
+    --primary: #2d6a4f;
+    --primary-light: #40916c;
+    --primary-dark: #1b4332;
+    --accent: #95d5b2;
+    --accent-light: #b7e4c7;
+    --bg-dark: #0f1a14;
+    --bg-card: #1a2b22;
+    --bg-card-hover: #243830;
+    --text-primary: #f0f7f4;
+    --text-secondary: #a0b5aa;
+    --border: #2d4a3a;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --gradient-1: linear-gradient(135deg, #2d6a4f 0%, #40916c 100%);
+    --gradient-2: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem 0;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Nutrition Summary Panel */
+.nutrition-panel {
+    background: var(--gradient-2);
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 10px 40px var(--shadow);
+    position: sticky;
+    top: 0.5rem;
+    z-index: 100;
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-light);
+}
+
+/* Kids Bowl Toggle */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.toggle-label {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.toggle {
+    position: relative;
+    width: 56px;
+    height: 30px;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-card);
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--border);
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 2px;
+    bottom: 2px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.toggle input:checked+.toggle-slider {
+    background: var(--primary-light);
+    border-color: var(--accent);
+}
+
+.toggle input:checked+.toggle-slider:before {
+    transform: translateX(26px);
+    background: var(--text-primary);
+}
+
+.toggle input:focus+.toggle-slider {
+    box-shadow: 0 0 0 3px rgba(149, 213, 178, 0.3);
+}
+
+/* Nutrition Stats */
+.nutrition-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    .nutrition-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nutrition-panel {
+        position: static;
+    }
+}
+
+.stat-card {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 0.6rem 0.75rem;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent-light);
+    transition: all 0.3s ease;
+}
+
+.stat-unit {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.kids-active .stat-value {
+    color: #ffd166;
+}
+
+/* Ingredient Categories */
+.categories {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.category {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.category:hover {
+    border-color: var(--primary-light);
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.category-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.category-count {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: var(--bg-dark);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+}
+
+/* Ingredient Grid */
+.ingredients {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.ingredient {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    background: var(--bg-dark);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.ingredient:hover {
+    background: var(--bg-card-hover);
+    transform: translateX(4px);
+}
+
+.ingredient.selected {
+    background: rgba(45, 106, 79, 0.3);
+    border-color: var(--primary-light);
+}
+
+.ingredient input {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.ingredient.selected .checkbox-custom {
+    background: var(--primary-light);
+    border-color: var(--accent);
+}
+
+.checkbox-custom svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--text-primary);
+    stroke-width: 3;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.ingredient.selected .checkbox-custom svg {
+    opacity: 1;
+}
+
+.ingredient-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ingredient-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ingredient-calories {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Half Portion Toggle */
+.half-btn {
+    display: none;
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    font-family: inherit;
+}
+
+.ingredient.selected .half-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.half-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.half-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-dark);
+}
+
+.ingredient.half-portion .ingredient-name::after {
+    content: ' (½)';
+    color: var(--accent);
+    font-size: 0.8rem;
+}
+
+/* Clear Selection Button */
+.clear-btn {
+    background: transparent;
+    border: 2px solid var(--border);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.clear-btn:hover {
+    border-color: #e63946;
+    color: #e63946;
+    background: rgba(230, 57, 70, 0.1);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Animations */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.stat-value.updated {
+    animation: pulse 0.3s ease;
+}
+    
